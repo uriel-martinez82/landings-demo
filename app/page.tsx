@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 type Estado = 'idle' | 'enviando' | 'exito' | 'error'
 
@@ -45,10 +46,13 @@ export default function Home() {
       {/* Header */}
       <header style={{
         backgroundColor: '#1A1410',
-        padding: '28px 24px',
+        padding: '32px 24px 28px',
         textAlign: 'center',
         borderBottom: '3px solid #C9A84C',
       }}>
+        <div style={{ width: '88px', height: '62px', margin: '0 auto 12px', position: 'relative' }}>
+          <Image src="/logo-white.png" alt="Agustina Spera" fill style={{ objectFit: 'contain' }} priority />
+        </div>
         <p style={{ color: '#C9A84C', fontSize: '11px', letterSpacing: '4px', textTransform: 'uppercase', margin: '0 0 8px', fontFamily: 'sans-serif' }}>
           Escuela de Danza y Arte
         </p>
@@ -71,7 +75,7 @@ export default function Home() {
         </p>
       </section>
 
-      {/* Nota preview */}
+      {/* Nota con input integrado */}
       <section style={{ maxWidth: '620px', margin: '0 auto 48px', padding: '0 24px' }}>
         <div style={{
           background: '#fff',
@@ -79,20 +83,35 @@ export default function Home() {
           borderLeft: '4px solid #C9A84C',
           padding: '28px 32px',
           fontFamily: 'Georgia, serif',
-          fontSize: '16px',
-          lineHeight: '1.9',
+          fontSize: '17px',
+          lineHeight: '2.1',
           color: '#1A1410',
           borderRadius: '2px',
         }}>
           <p style={{ margin: 0 }}>
-            Autorizo a mi hija <span style={{ borderBottom: '1px dashed #C9A84C', color: '#8B6914', paddingBottom: '1px' }}>
-              {form.alumno || '______________________'}
-            </span> a concurrir el <strong>5 de julio</strong> al <strong>Teatro Auditorio de Belgrano</strong> donde se realizará una competencia de danzas con la Escuela de Danza y Arte Agustina Spera.
+            Autorizo a mi hija{' '}
+            <input
+              name="alumno"
+              value={form.alumno}
+              onChange={handleChange}
+              placeholder="nombre y apellido"
+              required
+              style={{
+                fontFamily: 'Georgia, serif',
+                fontStyle: 'italic',
+                fontSize: '17px',
+                color: '#8B6914',
+                border: '1px solid #D4C4A8',
+                borderRadius: '3px',
+                backgroundColor: '#FDFBF7',
+                padding: '4px 10px',
+                width: '230px',
+                outline: 'none',
+              }}
+            />{' '}
+            a concurrir el <strong>5 de julio</strong> al <strong>Teatro Auditorio de Belgrano</strong> donde se realizará una competencia de danzas con la Escuela de Danza y Arte Agustina Spera.
           </p>
         </div>
-        <p style={{ textAlign: 'center', fontSize: '11px', color: '#9B8B7A', marginTop: '10px', fontFamily: 'sans-serif', letterSpacing: '1px' }}>
-          ↑ LA NOTA SE COMPLETA EN TIEMPO REAL
-        </p>
       </section>
 
       {/* Formulario o estado final */}
@@ -121,40 +140,30 @@ export default function Home() {
         <section style={{ maxWidth: '520px', margin: '0 auto 80px', padding: '0 24px' }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-            <div>
-              <label style={labelStyle}>Nombre y apellido del alumno/a</label>
-              <input
-                name="alumno"
-                value={form.alumno}
-                onChange={handleChange}
-                placeholder="Ej: Valentina García"
-                required
-                style={inputStyle}
-              />
-            </div>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              <div style={{ flex: '1 1 220px' }}>
+                <label style={labelStyle}>Nombre y apellido del responsable</label>
+                <input
+                  name="responsable"
+                  value={form.responsable}
+                  onChange={handleChange}
+                  placeholder="Ej: María García"
+                  required
+                  style={inputStyle}
+                />
+              </div>
 
-            <div>
-              <label style={labelStyle}>Nombre y apellido del responsable</label>
-              <input
-                name="responsable"
-                value={form.responsable}
-                onChange={handleChange}
-                placeholder="Ej: María García"
-                required
-                style={inputStyle}
-              />
-            </div>
-
-            <div>
-              <label style={labelStyle}>DNI del responsable</label>
-              <input
-                name="dni"
-                value={form.dni}
-                onChange={handleChange}
-                placeholder="Ej: 28.456.789"
-                required
-                style={inputStyle}
-              />
+              <div style={{ flex: '1 1 140px' }}>
+                <label style={labelStyle}>DNI del responsable</label>
+                <input
+                  name="dni"
+                  value={form.dni}
+                  onChange={handleChange}
+                  placeholder="Ej: 28.456.789"
+                  required
+                  style={inputStyle}
+                />
+              </div>
             </div>
 
             <div>
