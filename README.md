@@ -15,15 +15,17 @@ npm run dev
 
 | Variable | Descripción |
 |---|---|
-| `GMAIL_USER` | Tu cuenta Gmail (ej: danzayartelugano@gmail.com) |
-| `GMAIL_APP_PASSWORD` | App Password de Google (ver abajo) |
+| `RESEND_API_KEY` | API Key de tu cuenta Resend |
 
-## Cómo obtener el App Password de Gmail
+## Setup de Resend
 
-1. Entrá a myaccount.google.com
-2. Seguridad → Verificación en 2 pasos (activar si no está)
-3. Seguridad → Contraseñas de aplicaciones
-4. Generá una nueva → copiá las 16 letras → pegala en GMAIL_APP_PASSWORD
+1. Creá cuenta en [resend.com](https://resend.com) (gratis, 3.000 emails/mes)
+2. Agregá tu dominio `mudigital.com.ar` en Resend → Domains → Add Domain
+3. Resend te da registros DNS (TXT/MX/CNAME para SPF/DKIM) → agregalos en Cloudflare (igual que hicimos con el de Railway)
+4. Una vez verificado el dominio, creá una API Key en Resend → API Keys
+5. Pegá esa key en Railway → Variables → `RESEND_API_KEY`
+
+El remitente queda configurado como `autorizaciones@mudigital.com.ar` (definido en el código, en `app/api/enviar/route.ts`).
 
 ## Deploy en Railway
 

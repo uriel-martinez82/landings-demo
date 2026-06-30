@@ -1,15 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
+import { generarAutorizacionPDF } from './generarPdf'
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-})
+const resend = new Resend(process.env.RESEND_API_KEY)
+const FROM = 'Escuela Agustina Spera <autorizaciones@mudigital.com.ar>'
 
 function buildEmailHTML(alumno: string, responsable: string, dni: string) {
   return `
@@ -83,20 +77,36 @@ export async function POST(req: NextRequest) {
     const subject = `Autorización — ${alumno} — Competencia 5 de julio`
     const html = buildEmailHTML(alumno, responsable, dni)
 
+    const pdfBytes = await generarAutorizacionPDF(alumno, responsable, dni)
+    const pdfBuffer = Buffer.from(pdfBytes)
+    const nombreArchivo = `Autorizacion-${alumno.replace(/\s+/g, '_')}.pdf`
+
     // Mail al responsable
-    await transporter.sendMail({
-      from: `"Escuela Agustina Spera" <${process.env.GMAIL_USER}>`,
+    await resend.emails.send({
+      from: FROM,
       to: emailResponsable,
       subject,
       html,
+      attachments: [
+        {
+          filename: nombreArchivo,
+          content: pdfBuffer,
+        },
+      ],
     })
 
     // Copias a la escuela
-    await transporter.sendMail({
-      from: `"Escuela Agustina Spera" <${process.env.GMAIL_USER}>`,
+    await resend.emails.send({
+      from: FROM,
       to: ['uriel.martinez.elias@gmail.com', 'danzayartelugano@gmail.com'],
       subject: `[COPIA] ${subject}`,
       html,
+      attachments: [
+        {
+          filename: nombreArchivo,
+          content: pdfBuffer,
+        },
+      ],
     })
 
     return NextResponse.json({ ok: true })
