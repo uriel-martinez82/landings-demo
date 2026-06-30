@@ -140,9 +140,9 @@ export default function Home() {
         <section style={{ maxWidth: '520px', margin: '0 auto 80px', padding: '0 24px' }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
               <div style={{ flex: '1 1 220px' }}>
-                <label style={labelStyle}>Nombre y apellido del responsable</label>
+                <label style={{ ...labelStyle, minHeight: '28px', display: 'flex', alignItems: 'flex-end' }}>Responsable</label>
                 <input
                   name="responsable"
                   value={form.responsable}
@@ -154,7 +154,7 @@ export default function Home() {
               </div>
 
               <div style={{ flex: '1 1 140px' }}>
-                <label style={labelStyle}>DNI del responsable</label>
+                <label style={{ ...labelStyle, minHeight: '28px', display: 'flex', alignItems: 'flex-end' }}>DNI del responsable</label>
                 <input
                   name="dni"
                   value={form.dni}
